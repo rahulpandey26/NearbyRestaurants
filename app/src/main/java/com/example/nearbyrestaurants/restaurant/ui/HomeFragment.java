@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.nearbyrestaurants.R;
 import com.example.nearbyrestaurants.common.ui.fragment.BaseFragment;
 import com.example.nearbyrestaurants.common.util.Constant;
+import com.example.nearbyrestaurants.common.util.NetworkUtil;
 import com.example.nearbyrestaurants.common.util.WebService;
 import com.example.nearbyrestaurants.restaurant.adapter.RestaurantListAdapter;
 import com.example.nearbyrestaurants.restaurant.model.RestaurantsResponse;
@@ -103,6 +104,10 @@ public class HomeFragment extends BaseFragment implements WebService.OnParsingCo
     }
 
     private void getRestaurantList(String nextPageToken) {
+        if(!NetworkUtil.isAvailable(getContext())) {
+            Toast.makeText(getContext(), R.string.no_internet_connection, Toast.LENGTH_LONG).show();
+            return;
+        }
         setProgressBarVisible();
         String query = "type=restaurant&key=" + Constant.GOOGLE_PLACE_KEY +
                 "&rankby=distance&location=" + mLatitude + ", " + mLongitude;

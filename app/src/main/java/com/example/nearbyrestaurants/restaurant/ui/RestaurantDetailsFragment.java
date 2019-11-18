@@ -15,6 +15,7 @@ import com.example.nearbyrestaurants.R;
 import com.example.nearbyrestaurants.common.ui.fragment.BaseFragment;
 import com.example.nearbyrestaurants.common.util.Constant;
 import com.example.nearbyrestaurants.common.util.ImageDownloader;
+import com.example.nearbyrestaurants.common.util.NetworkUtil;
 
 public class RestaurantDetailsFragment extends BaseFragment implements
         ImageDownloader.OnImageDownloadedListener, View.OnTouchListener,
@@ -67,6 +68,10 @@ public class RestaurantDetailsFragment extends BaseFragment implements
     }
 
     private void getPlacePhoto() {
+        if(!NetworkUtil.isAvailable(getContext())) {
+            Toast.makeText(getContext(), R.string.no_internet_connection, Toast.LENGTH_LONG).show();
+            return;
+        }
         if(null != mPhotoReference) {
             setProgressBarVisible();
             String query = "key=" + Constant.GOOGLE_PLACE_KEY +

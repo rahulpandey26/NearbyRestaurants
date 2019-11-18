@@ -3,4 +3,6 @@
     <string name="fetch_restaurant_list_error">Unable to fetch Restaurants</string>
     <string name="nearby_restaurants">NearBy Restaurants</string>
     <string name="image_not_available_error_msg">Image not available</string>
+    <string name="permission_manadatory_msg">These permissions are mandatory for the application. Please allow access.</string>
+    <string name="no_internet_connection">No internet connection</string>
 </resources>

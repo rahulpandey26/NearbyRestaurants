@@ -6,15 +6,19 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.nearbyrestaurants.R;
 import com.example.nearbyrestaurants.common.util.Constant;
 import com.example.nearbyrestaurants.common.util.DialogUtil;
 import com.example.nearbyrestaurants.common.util.FragmentHelper;
 import com.example.nearbyrestaurants.common.util.TrackLocation;
 import com.example.nearbyrestaurants.restaurant.model.Result;
+
 import java.util.ArrayList;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -30,7 +34,14 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setPermission();
+        int checkAccessFineLocation = checkCallingOrSelfPermission(ACCESS_FINE_LOCATION);
+        int checkAccessCoarseLocation = checkCallingOrSelfPermission(ACCESS_COARSE_LOCATION);
+        if (checkAccessFineLocation == PackageManager.PERMISSION_GRANTED &&
+                checkAccessCoarseLocation == PackageManager.PERMISSION_GRANTED) {
+            getDeviceLocation();
+        } else {
+            setPermission();
+        }
     }
 
     private void setPermission() {
@@ -40,7 +51,6 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
         mPermissionsToRequest = findUnAskedPermissions(permissions);
         //get the permissions we have asked for before but are not granted..
         //we will store this in a global list to access later.
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (mPermissionsToRequest.size() > 0)
                 requestPermissions(mPermissionsToRequest.toArray(new String[mPermissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
@@ -54,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
             double latitude = mTrackLocation.getLatitude();
             loadHomeFragment(latitude, longitude);
             Toast.makeText(getApplicationContext(), "Longitude:" + longitude + "\nLatitude:" +
-                            latitude, Toast.LENGTH_SHORT).show();
+                    latitude, Toast.LENGTH_SHORT).show();
         } else {
             mTrackLocation.showSettingsAlert();
         }
@@ -102,8 +112,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
             if (mPermissionsRejected.size() > 0) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (shouldShowRequestPermissionRationale(mPermissionsRejected.get(0))) {
-                        DialogUtil.showAlertMessage(this,
-                                "These permissions are mandatory for the application. Please allow access.",
+                        DialogUtil.showAlertMessage(this, getString(R.string.permission_manadatory_msg),
                                 (dialog, which) -> requestPermissions(mPermissionsRejected.toArray(new
                                         String[mPermissionsRejected.size()]), ALL_PERMISSIONS_RESULT));
                     }
