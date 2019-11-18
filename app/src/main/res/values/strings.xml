@@ -5,4 +5,5 @@
     <string name="image_not_available_error_msg">Image not available</string>
     <string name="permission_manadatory_msg">These permissions are mandatory for the application. Please allow access.</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="restaurant_image_not_available_error_msg">Restaurant Details not available</string>
 </resources>

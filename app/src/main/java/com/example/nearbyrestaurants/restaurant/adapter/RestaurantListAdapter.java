@@ -7,13 +7,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.nearbyrestaurants.R;
 import com.example.nearbyrestaurants.common.util.AppSharedPreference;
 import com.example.nearbyrestaurants.common.util.AppUtil;
 import com.example.nearbyrestaurants.common.util.ImageDownloader;
 import com.example.nearbyrestaurants.restaurant.model.Result;
+
 import java.util.List;
 
 public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -45,7 +49,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof RestaurantViewHolder) {
-           setRestaurantView((RestaurantViewHolder) holder, position);
+            setRestaurantView((RestaurantViewHolder) holder, position);
         } else if (holder instanceof LoadingViewHolder) {
             setLoadingView((LoadingViewHolder) holder, position);
         }
@@ -58,7 +62,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public int getItemViewType(int position) {
-        if(mRestaurantsList.size() > 0) {
+        if (mRestaurantsList.size() > 0) {
             return position == mRestaurantsList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
         } else {
             return 0;
@@ -93,8 +97,8 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
-    private void setRestaurantView(RestaurantViewHolder restaurantViewHolder, final int position){
-        if(mRestaurantsList.size() > 0) {
+    private void setRestaurantView(RestaurantViewHolder restaurantViewHolder, final int position) {
+        if (mRestaurantsList.size() > 0) {
             restaurantViewHolder.mTitle.setText(mRestaurantsList.get(position).getName());
             restaurantViewHolder.mLocation.setText(mRestaurantsList.get(position).getVicinity());
             double restaurantLat = mRestaurantsList.get(position).getGeometry().getLocation().getLat();
@@ -102,12 +106,21 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             Context context = restaurantViewHolder.mDistance.getContext();
             restaurantViewHolder.mDistance.setText(String.format("%s Km", String.valueOf(
                     Math.round(AppUtil.distance(AppSharedPreference.getInstance().getDeviceLat(context),
-                    AppSharedPreference.getInstance().getDeviceLan(context),
-                    restaurantLat, restaurantLan, "K")))));
+                            AppSharedPreference.getInstance().getDeviceLan(context),
+                            restaurantLat, restaurantLan, "K")))));
             new ImageDownloader(restaurantViewHolder.mHotelImage, null).
                     execute(mRestaurantsList.get(position).getIcon());
             restaurantViewHolder.mRestaurantLyt.setOnClickListener(v ->
-                    mListener.onItemClicked(mRestaurantsList.get(position).getPhotos().get(0).getPhotoReference()));
+            {
+                if (null != mRestaurantsList.get(position).getPhotos() &&
+                        mRestaurantsList.get(position).getPhotos().size() > 0) {
+                    mListener.onItemClicked(mRestaurantsList.get(position).getPhotos().get(0).
+                            getPhotoReference());
+                } else {
+                    Toast.makeText(context, R.string.restaurant_image_not_available_error_msg,
+                            Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 

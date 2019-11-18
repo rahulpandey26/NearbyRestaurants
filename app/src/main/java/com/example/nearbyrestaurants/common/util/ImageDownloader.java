@@ -5,8 +5,13 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.nearbyrestaurants.R;
+
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 
 public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
@@ -33,15 +38,18 @@ public class ImageDownloader extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         ImageView imageView = imageViewReference.get();
-        if (imageView != null) {
+        if (imageView != null && result != null) {
             imageView.setImageBitmap(result);
             if(null != mListener) {
                 mListener.OnImageDownloaded();
             }
+        } else {
+           mListener.OnImageDownloadingError();
         }
     }
 
     public interface OnImageDownloadedListener {
         void OnImageDownloaded();
+        void OnImageDownloadingError();
     }
 }

@@ -14,8 +14,11 @@ import androidx.annotation.Nullable;
 import com.example.nearbyrestaurants.R;
 import com.example.nearbyrestaurants.common.ui.fragment.BaseFragment;
 import com.example.nearbyrestaurants.common.util.Constant;
+import com.example.nearbyrestaurants.common.util.DialogUtil;
 import com.example.nearbyrestaurants.common.util.ImageDownloader;
 import com.example.nearbyrestaurants.common.util.NetworkUtil;
+
+import java.util.Objects;
 
 public class RestaurantDetailsFragment extends BaseFragment implements
         ImageDownloader.OnImageDownloadedListener, View.OnTouchListener,
@@ -86,6 +89,12 @@ public class RestaurantDetailsFragment extends BaseFragment implements
     @Override
     public void OnImageDownloaded() {
         hideProgressBar();
+    }
+
+    @Override
+    public void OnImageDownloadingError() {
+        hideProgressBar();
+        Toast.makeText(getContext(), R.string.image_not_available_error_msg, Toast.LENGTH_LONG).show();
     }
 
 
