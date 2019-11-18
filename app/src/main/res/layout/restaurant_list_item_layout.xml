@@ -12,9 +12,21 @@
         android:layout_width="100dp"
         android:scaleType="center"/>
 
+    <TextView
+        android:id="@+id/distance"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textSize="13sp" />
+
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/hotel_image"
+        android:layout_toStartOf="@id/distance"
         android:layout_width="match_parent"
         android:layout_marginEnd="10dp"
         android:layout_centerVertical="true"
@@ -26,8 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:singleLine="true"
-            android:textSize="15sp"
-            android:text="ffggdfdf"/>
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/location"
@@ -36,8 +47,8 @@
             android:layout_width="match_parent"
             android:maxLines="2"
             android:singleLine="true"
-            android:textSize="13sp"
-            android:text="fdjdkf"/>
+            android:textSize="13sp" />
 
     </LinearLayout>
+
 </RelativeLayout>

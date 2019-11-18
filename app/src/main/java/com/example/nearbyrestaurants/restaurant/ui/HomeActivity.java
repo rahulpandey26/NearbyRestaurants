@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.nearbyrestaurants.R;
+import com.example.nearbyrestaurants.common.util.AppSharedPreference;
 import com.example.nearbyrestaurants.common.util.Constant;
 import com.example.nearbyrestaurants.common.util.DialogUtil;
 import com.example.nearbyrestaurants.common.util.FragmentHelper;
@@ -62,6 +63,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
         if (mTrackLocation.canGetLocation()) {
             double longitude = mTrackLocation.getLongitude();
             double latitude = mTrackLocation.getLatitude();
+            AppSharedPreference.getInstance().setDeviceLat(this, latitude);
+            AppSharedPreference.getInstance().setDeviceLan(this, longitude);
             loadHomeFragment(latitude, longitude);
             Toast.makeText(getApplicationContext(), "Longitude:" + longitude + "\nLatitude:" +
                     latitude, Toast.LENGTH_SHORT).show();

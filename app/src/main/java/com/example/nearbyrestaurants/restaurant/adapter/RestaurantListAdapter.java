@@ -1,5 +1,6 @@
 package com.example.nearbyrestaurants.restaurant.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.nearbyrestaurants.R;
+import com.example.nearbyrestaurants.common.util.AppSharedPreference;
+import com.example.nearbyrestaurants.common.util.AppUtil;
 import com.example.nearbyrestaurants.common.util.ImageDownloader;
 import com.example.nearbyrestaurants.restaurant.model.Result;
 import java.util.List;
@@ -67,6 +70,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private View mRestaurantLyt;
         private TextView mTitle;
         private TextView mLocation;
+        private TextView mDistance;
         private ImageView mHotelImage;
 
         RestaurantViewHolder(@NonNull View itemView) {
@@ -75,6 +79,7 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             mTitle = itemView.findViewById(R.id.title);
             mLocation = itemView.findViewById(R.id.location);
             mHotelImage = itemView.findViewById(R.id.hotel_image);
+            mDistance = itemView.findViewById(R.id.distance);
         }
     }
 
@@ -92,14 +97,17 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(mRestaurantsList.size() > 0) {
             restaurantViewHolder.mTitle.setText(mRestaurantsList.get(position).getName());
             restaurantViewHolder.mLocation.setText(mRestaurantsList.get(position).getVicinity());
-            new ImageDownloader(restaurantViewHolder.mHotelImage, null).execute(mRestaurantsList.get(position)
-                    .getIcon());
-            restaurantViewHolder.mRestaurantLyt.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mListener.onItemClicked(mRestaurantsList.get(position).getPhotos().get(0).getPhotoReference());
-                }
-            });
+            double restaurantLat = mRestaurantsList.get(position).getGeometry().getLocation().getLat();
+            double restaurantLan = mRestaurantsList.get(position).getGeometry().getLocation().getLng();
+            Context context = restaurantViewHolder.mDistance.getContext();
+            restaurantViewHolder.mDistance.setText(String.format("%s Km", String.valueOf(
+                    Math.round(AppUtil.distance(AppSharedPreference.getInstance().getDeviceLat(context),
+                    AppSharedPreference.getInstance().getDeviceLan(context),
+                    restaurantLat, restaurantLan, "K")))));
+            new ImageDownloader(restaurantViewHolder.mHotelImage, null).
+                    execute(mRestaurantsList.get(position).getIcon());
+            restaurantViewHolder.mRestaurantLyt.setOnClickListener(v ->
+                    mListener.onItemClicked(mRestaurantsList.get(position).getPhotos().get(0).getPhotoReference()));
         }
     }
 
