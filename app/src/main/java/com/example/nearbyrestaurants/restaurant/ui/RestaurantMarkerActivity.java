@@ -38,13 +38,14 @@ public class RestaurantMarkerActivity extends FragmentActivity implements OnMapR
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        float zoomLevel = 16.0f;
         for(int pos = 0; pos < mRestaurantList.size(); pos++){
             if(null != mRestaurantList.get(pos).getGeometry()) {
                 LatLng latLng = new LatLng(mRestaurantList.get(pos).getGeometry().getLocation().getLat(),
                         mRestaurantList.get(pos).getGeometry().getLocation().getLng());
                 googleMap.addMarker(new MarkerOptions().position(latLng)
                         .title(mRestaurantList.get(pos).getName()));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
             }
         }
     }

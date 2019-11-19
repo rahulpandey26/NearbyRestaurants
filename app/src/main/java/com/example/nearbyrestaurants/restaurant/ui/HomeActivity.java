@@ -66,8 +66,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
             AppSharedPreference.getInstance().setDeviceLat(this, latitude);
             AppSharedPreference.getInstance().setDeviceLan(this, longitude);
             loadHomeFragment(latitude, longitude);
-            Toast.makeText(getApplicationContext(), "Longitude:" + longitude + "\nLatitude:" +
-                    latitude, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Latitude:" + latitude + "\nLongitude:" +
+                    longitude, Toast.LENGTH_SHORT).show();
         } else {
             mTrackLocation.showSettingsAlert();
         }

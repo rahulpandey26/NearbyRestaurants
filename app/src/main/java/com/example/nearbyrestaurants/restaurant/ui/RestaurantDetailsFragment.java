@@ -48,6 +48,7 @@ public class RestaurantDetailsFragment extends BaseFragment implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getBundleData();
+        mScaleGestureDetector = new ScaleGestureDetector(getContext(), this);
     }
 
     @Override

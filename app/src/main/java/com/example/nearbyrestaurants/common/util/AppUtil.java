@@ -1,5 +1,7 @@
 package com.example.nearbyrestaurants.common.util;
 
+import java.text.DecimalFormat;
+
 public class AppUtil {
 
     public static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
@@ -7,17 +9,18 @@ public class AppUtil {
             return 0;
         }
         else {
+            DecimalFormat decimalFormat = new DecimalFormat("##.##");
             double theta = lon1 - lon2;
             double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
             dist = Math.acos(dist);
             dist = Math.toDegrees(dist);
             dist = dist * 60 * 1.1515;
-            if (unit.equals("K")) {
-                dist = dist * 1.609344;
+            if (unit.equals("m")) {
+                dist = dist * 1.609344 * 1000;
             } else if (unit.equals("N")) {
                 dist = dist * 0.8684;
             }
-            return (dist);
+            return Double.parseDouble(decimalFormat.format(dist));
         }
     }
 }

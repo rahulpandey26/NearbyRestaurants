@@ -104,10 +104,10 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             double restaurantLat = mRestaurantsList.get(position).getGeometry().getLocation().getLat();
             double restaurantLan = mRestaurantsList.get(position).getGeometry().getLocation().getLng();
             Context context = restaurantViewHolder.mDistance.getContext();
-            restaurantViewHolder.mDistance.setText(String.format("%s Km", String.valueOf(
-                    Math.round(AppUtil.distance(AppSharedPreference.getInstance().getDeviceLat(context),
-                            AppSharedPreference.getInstance().getDeviceLan(context),
-                            restaurantLat, restaurantLan, "K")))));
+            restaurantViewHolder.mDistance.setText(String.format("%s m", String.valueOf(
+                    AppUtil.distance(Double.parseDouble(AppSharedPreference.getInstance().getDeviceLat(context)),
+                            Double.parseDouble(AppSharedPreference.getInstance().getDeviceLan(context)),
+                            restaurantLat, restaurantLan, "m"))));
             new ImageDownloader(restaurantViewHolder.mHotelImage, null).
                     execute(mRestaurantsList.get(position).getIcon());
             restaurantViewHolder.mRestaurantLyt.setOnClickListener(v ->

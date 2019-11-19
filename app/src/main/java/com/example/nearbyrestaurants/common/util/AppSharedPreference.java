@@ -25,23 +25,21 @@ public class AppSharedPreference {
 
     public void setDeviceLat(Context context, double deviceLat){
         final SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putLong(KEY_DEVICE_LAT ,  Double.doubleToLongBits(deviceLat));
+        editor.putString(KEY_DEVICE_LAT ,  String.valueOf(deviceLat));
         editor.apply();
     }
 
-    public double getDeviceLat(Context context){
-        return Double.doubleToRawLongBits(getSharedPreferences(context).getLong(KEY_DEVICE_LAT ,
-                0));
+    public String getDeviceLat(Context context){
+        return getSharedPreferences(context).getString(KEY_DEVICE_LAT , "");
     }
 
     public void setDeviceLan(Context context, double deviceLat){
         final SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putLong(KEY_DEVICE_LAN ,  Double.doubleToLongBits(deviceLat));
+        editor.putString(KEY_DEVICE_LAN ,  String.valueOf(deviceLat));
         editor.apply();
     }
 
-    public double getDeviceLan(Context context){
-        return Double.doubleToRawLongBits(getSharedPreferences(context).getLong(KEY_DEVICE_LAN ,
-                0));
+    public String getDeviceLan(Context context){
+        return getSharedPreferences(context).getString(KEY_DEVICE_LAN , "");
     }
 }
