@@ -78,7 +78,6 @@ public class HomeFragment extends BaseFragment implements WebService.OnParsingCo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initializeViews(view);
-        setAdapter();
         getRestaurantList("");
         initScrollListener();
     }
@@ -92,6 +91,7 @@ public class HomeFragment extends BaseFragment implements WebService.OnParsingCo
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             getRestaurantList("");
+            mRestaurantList.clear();
             mSwipeRefreshLayout.setRefreshing(false);
         });
     }
@@ -124,7 +124,7 @@ public class HomeFragment extends BaseFragment implements WebService.OnParsingCo
         if (null != restaurantsResponse) {
             mRestaurantResults = restaurantsResponse;
             mRestaurantList.addAll(restaurantsResponse.getResults());
-            Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
+            setAdapter();
             hideProgressBar();
         }
     }
